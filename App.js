@@ -17,9 +17,9 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Scan from './src/screens/Scan';
 import Products from './src/screens/Products';
-// import Print from './src/screens/Print';
+import Print from './src/screens/Print';
 import Customer from './src/screens/Customer';
-// import GeoLocation from './src/screens/GeoLocation';
+import GeoLocation from './src/screens/GeoLocation';
 // import Summary from './src/screens/Summary';
 import UserLogin from './src/screens/UserLogin';
 
@@ -61,9 +61,9 @@ function App() {
             headerShown: true,
           }}
         />
-        {/* <Stack.Screen name="GeoLocation" component={GeoLocation} />
+        <Stack.Screen name="GeoLocation" component={GeoLocation} />
         <Stack.Screen name="Print" component={Print} />
-        <Stack.Screen name="Summary" component={Summary} /> */}
+        {/* <Stack.Screen name="Summary" component={Summary} /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );

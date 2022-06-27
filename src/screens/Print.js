@@ -7,13 +7,13 @@ import {
   FlatList,
   Alert,
   Image,
+  PermissionsAndroid
 } from 'react-native';
 import {
   USBPrinter,
   NetPrinter,
   BLEPrinter,
 } from 'react-native-thermal-receipt-printer';
-import CheckBox from '@react-native-community/checkbox';
 import styles from './scanStyle';
 import Icon from 'react-native-vector-icons/Ionicons';
 import axios from 'axios';
@@ -75,9 +75,37 @@ const Print = prop => {
       setData(prop.route.params);
     }
 
-    BLEPrinter.init().then(() => {
-      BLEPrinter.getDeviceList().then(setPrinters);
-    });
+    const requestBluetoothPermission = async () => {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT,
+          {
+            title: "Bluetooth Permission",
+            message:
+              "Bluetooth need access " ,
+            buttonNeutral: "Ask Me Later",
+            buttonNegative: "Cancel",
+            buttonPositive: "OK"
+          }
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          console.log("You can use the bluetooth");
+          BLEPrinter.init().then(() => {
+              BLEPrinter.getDeviceList().then(setPrinters);
+            });
+        } else {
+          console.log("bluetooth permission denied");
+        }
+      } catch (err) {
+        console.warn(err);
+      }
+    }
+
+    requestBluetoothPermission();
+
+    // BLEPrinter.init().then(() => {
+    //   BLEPrinter.getDeviceList().then(setPrinters);
+    // });
   }, []);
 
   const _connectPrinter = printer => {
@@ -110,8 +138,6 @@ const Print = prop => {
   // printTextTest = () => {
   //   currentPrinter && BLEPrinter.printText('<C>sample text</C>\n');
   // };
-
-  const test = 'Vedh';
 
   const printResult = async () => {
     try {
@@ -225,6 +251,7 @@ const Print = prop => {
       //   );
     } catch (error) {
       console.log('Error : ', error.message, error.status);
+      alert('No printer connected!!');
     }
   };
 
@@ -274,9 +301,12 @@ const Print = prop => {
             marginTop: 25,
             justifyContent: 'center',
             alignItems: 'center',
+            
           }}>
           <TouchableOpacity
             activeOpacity={0.5}
+            style = {{borderWidth: 2,
+              borderRadius: 5, borderColor: 'grey', padding:5}}
             onPress={() => prop.navigation.navigate('GeoLocation')}>
             <Image
               source={{
@@ -295,7 +325,8 @@ const Print = prop => {
                 fontSize: 15,
                 color: '#A0522D',
               }}>
-              {addr}
+              {/* {addr} */}
+              {`Latitude: ${prop.route.params.latitude  !== undefined ? prop.route.params.latitude : 0} , Longitude: ${prop.route.params.longitude !== undefined ? prop.route.params.longitude : 0}`}
             </Text>
           </View>
         </View>

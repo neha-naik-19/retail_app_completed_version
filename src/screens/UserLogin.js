@@ -9,7 +9,7 @@ import {
   TextInput,
   StatusBar,
   ActivityIndicator,
-  Keyboard,
+  Keyboard, Image
 } from 'react-native';
 // import styles from './scanStyle';
 import axios from 'axios';
@@ -53,50 +53,74 @@ const UserLogin = prop => {
       //   console.log(error.response.headers);
       //   alert('User not found');
       // }
-console.log(error.message);
+
+      //console.log(error.response.data);
+
       setLoading(false);
-      alert('User not found');
+      if(error.response.data !== undefined){
+        alert(error.response.data.message);
+      }else {
+        alert(`Network error. Please check!!`);
+      }
+      
+      // console.log(error.response.data);
+      //alert('User not found');
+      // alert(error.message);
     }
   };
 
   return (
-    <View style={userStyle.container}>
-      <StatusBar backgroundColor="#ADD8E6" barStyle="light-content" />
-      <Text style={userStyle.welcome}>Login</Text>
-      <TextInput
-        style={userStyle.input}
-        autoCapitalize="none"
-        placeholder="Username"
-        onChangeText={usr => setUserName(usr)}
-        value={userName.toString()}
-      />
-      <TextInput
-        style={userStyle.input}
-        autoCapitalize="none"
-        placeholder="Password"
-        onChangeText={pas => setPassword(pas)}
-        value={password.toString()}
-        secureTextEntry
-      />
-      <View>
-        <TouchableOpacity
-          style={userStyle.userBtn}
-          onPress={() => verifyUser(userName, password)}
-          >
-          <Text style={userStyle.btnTxt}>Login</Text>
-        </TouchableOpacity>
-      </View>
-      {loading ? (
-        <View
+    <View style={{flex:1, backgroundColor:"#ADD8E6"}}>
+      <Text style={{alignSelf: 'center', marginTop: 50, 
+        backgroundColor:"#ADD8E6", fontSize: 35, color:'#330066'}}>Veneshell</Text>
+      <Text style={{alignSelf: 'center', fontSize: 12, color:'#330066'}}>BLENDING QUALITY</Text>
+      <View style={userStyle.container}>
+        <StatusBar backgroundColor="#ADD8E6" barStyle="light-content" />
+        {/* <Image
+          source={{
+            uri: 'https://aepplast.sgp1.cdn.digitaloceanspaces.com/aep/logo/logo.png',
+          }}
           style={{
-            alignItems: 'center',
-            marginTop: 10,
-          }}>
-          <ActivityIndicator size="large" color="grey" />
+            width: '100%',
+            height: 50,
+          }}
+        /> */}
+        <Text style={userStyle.welcome}>Login</Text>
+        <TextInput
+          style={userStyle.input}
+          autoCapitalize="none"
+          placeholder="Username"
+          onChangeText={usr => setUserName(usr)}
+          value={userName.toString()}
+        />
+        <TextInput
+          style={userStyle.input}
+          autoCapitalize="none"
+          placeholder="Password"
+          onChangeText={pas => setPassword(pas)}
+          value={password.toString()}
+          secureTextEntry
+        />
+        <View>
+          <TouchableOpacity
+            style={userStyle.userBtn}
+            onPress={() => verifyUser(userName, password)}
+            >
+            <Text style={userStyle.btnTxt}>Login</Text>
+          </TouchableOpacity>
         </View>
-      ) : (
-        <></>
-      )}
+        {loading ? (
+          <View
+            style={{
+              alignItems: 'center',
+              marginTop: 10,
+            }}>
+            <ActivityIndicator size="large" color="grey" />
+          </View>
+        ) : (
+          <></>
+        )}
+      </View>
     </View>
   );
 };

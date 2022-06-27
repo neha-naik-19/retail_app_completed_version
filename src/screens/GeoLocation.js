@@ -15,15 +15,18 @@ import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import {Dimensions} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import Geocoder from 'react-native-geocoder';
-import Geocoder1 from 'react-native-geocoding';
+// import Geocoder from 'react-native-geocoder';
+// import Geocoder1 from 'react-native-geocoding';
+import Geocoder from 'react-native-geocoding';
 
 const GeoLocation = prop => {
   const [currentLongitude, setCurrentLongitude] = useState(0);
   const [currentLatitude, setCurrentLatitude] = useState(0);
   const [locationStatus, setLocationStatus] = useState('');
-  Geocoder.fallbackToGoogle('AIzaSyDl4WjiXse1SS-UWOiLcSrHfxdmwBZgURA');
-  Geocoder1.init('AIzaSyDl4WjiXse1SS-UWOiLcSrHfxdmwBZgURA');
+  //Geocoder.fallbackToGoogle('AIzaSyDl4WjiXse1SS-UWOiLcSrHfxdmwBZgURA');
+  //Geocoder1.init('AIzaSyDl4WjiXse1SS-UWOiLcSrHfxdmwBZgURA');
+
+  Geocoder.init('AIzaSyDl4WjiXse1SS-UWOiLcSrHfxdmwBZgURA'); // use a valid API key
 
   prop.navigation.setOptions({
     headerShown: false,
@@ -84,6 +87,16 @@ const GeoLocation = prop => {
 
         //Setting Longitude state
         setCurrentLatitude(currentLatitude);
+
+        // Geocoder.from(currentLatitude, currentLatitude)
+        // .then(json => {
+        //   var addressComponent = json.results[0].address_components[0];
+        //   console.log(addressComponent);
+        // })
+        // .catch(error =>
+        //   console.warn(error)
+        // );    
+
       },
       error => {
         setLocationStatus(error.message);
@@ -133,14 +146,15 @@ const GeoLocation = prop => {
         lng: parseFloat(currentLongitude),
       };
 
-      const addr = await Geocoder.geocodePosition(NY);
+      //const addr = await Geocoder.geocodePosition(NY);
 
       // const addr1 = Geocoder1.from({NY});
 
       prop.navigation.navigate('Print', {
         latitude: currentLatitude,
         longitude: currentLongitude,
-        addr: addr[0],
+        // addr: addr[0],
+        addr: '',
       });
     }
   };

@@ -130,6 +130,14 @@ const Customer = prop => {
     setCustomerNumber('');
     setAdd(true);
     setVerifyNumber(false);
+    setCustName('');
+    setCustContact('');
+    setCustEmail('');
+    setCustAdr1('');
+    setCustAdr2('');
+    setCustCity('');
+    setCustState('');
+    setCustPinCode('');
   };
 
   const addText = () => {
@@ -183,7 +191,12 @@ const Customer = prop => {
     } else {
       // console.log('result :- ', result, result.length);
       if (result !== []) {
-        customerObj = [{...result}];
+        if(result.length > 0){
+          customerObj = [{...result}];
+        }else{
+          Alert.alert('Please enter required customer details.');
+          return;
+        }
       } else {
         Alert.alert('Please enter required customer details.');
         return;
